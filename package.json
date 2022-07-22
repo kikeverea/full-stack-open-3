@@ -1,0 +1,27 @@
+{
+  "name": "part3",
+  "version": "1.0.0",
+  "description": "Backend server for phonebbok",
+  "main": "index.js",
+  "scripts": {
+    "start" : "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kikeverea/full-stack-open-3.git"
+  },
+  "author": "Enrique Verea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kikeverea/full-stack-open-3/issues"
+  },
+  "homepage": "https://github.com/kikeverea/full-stack-open-3#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
