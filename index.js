@@ -33,24 +33,39 @@ let persons = [
 app.get('/', (request, response) =>
   response.send('Hello World'))
 
-app.get('/info', (request, response) => {
+app.get('/info', (request, response) => 
   response.send(
     `<p>Phonebook has info for ${persons.length} people</p>
     <p>${new Date()}</p>`
-  )}
-)
+  ))
 
 app.get('/api/persons', (request, response) =>
   response.json(persons))
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id);
-    if (person) {
-      response.json(person)
-    }
-    else {
-      response.status(404).end()
-    }
+  const id = Number(request.params.id)
+  const person = persons.find(person => person.id === id);
+  if (person) {
+    response.json(person)
   }
-)
+  else {
+    response.status(404).end()
+  }
+})
+
+app.get('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const person = persons.find(person => person.id === id);
+  if (person) {
+    response.json(person)
+  }
+  else {
+    response.status(404).end()
+  }
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  persons = persons.filter(person => person.id != id)
+  response.status(204, 'Delete success').end()
+})
