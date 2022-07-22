@@ -53,16 +53,15 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
-app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id);
-  if (person) {
-    response.json(person)
-  }
-  else {
-    response.status(404).end()
-  }
+app.post('/api/persons', (request, response) => {
+  const person = request.body
+  person.id = generateId()
+  persons = persons.concat(person)
+  response.status(201).json(person)
 })
+
+const generateId = () =>
+  Math.floor(Math.random() * 10000);
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
