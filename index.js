@@ -57,12 +57,14 @@ app.post('/api/persons', (request, response) => {
   const person = request.body
 
   if(!person.name || !person.number) {
-    response.status(400)
+    return response
+            .status(400)
             .json({error: "Both 'name' and 'number' must be provided"})
   }
 
-  if (notUnique) {
-    response.status(409)
+  if (notUnique(person.name)) {
+    return response
+            .status(409)
             .json({error: `Name must be unique. ${person.name} already exists`})
   }
 
