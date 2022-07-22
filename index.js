@@ -55,10 +55,24 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const person = request.body
+
+  if(!person.name || !person.number) {
+    response.status(400)
+            .json({error: "Both 'name' and 'number' must be provided"})
+  }
+
+  if (notUnique) {
+    response.status(409)
+            .json({error: `Name must be unique. ${person.name} already exists`})
+  }
+
   person.id = generateId()
   persons = persons.concat(person)
   response.status(201).json(person)
 })
+
+const notUnique = (name) =>
+  persons.find(person => person.name === name)
 
 const generateId = () =>
   Math.floor(Math.random() * 10000);
