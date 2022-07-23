@@ -1,12 +1,16 @@
 {
   "name": "part3",
   "version": "1.0.0",
-  "description": "Backend server for phonebbok",
+  "description": "Backend server for phonebook",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build:ui": "rm -rf build && cd ../part2/phonebook && npm run build && cp -r build ../../depart3",
+    "deploy": "git push heroku main",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",    
+    "logs:prod": "heroku logs --tail"
   },
   "repository": {
     "type": "git",
