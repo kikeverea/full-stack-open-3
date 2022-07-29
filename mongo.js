@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const args = process.argv
 
 if  (args.length < 3 || 
-    (args.length >= 3 && args.length < 5)) {
+    (args.length > 3 && args.length < 5)) {
   console.log('\nUSAGE:')
   console.log('mongo.js <password> => query-all')
   console.log('mongo.js <password> person-name phone-number => create-person')
@@ -25,7 +25,7 @@ if (args.length === 3) {
   mongoose
     .connect(url)
     .then(result => {
-      console.log('Connected')
+      console.log('Connected...')  
       Person.find({}).then(result => {
         result.forEach(person => console.log(person))
         mongoose.connection.close()
