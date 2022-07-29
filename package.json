@@ -9,7 +9,7 @@
     "dev": "nodemon index.js",
     "build:ui": "rm -rf build && cd ../part2/phonebook && npm run build && cp -r build ../../depart3",
     "deploy": "git push heroku main",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",    
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
     "logs:prod": "heroku logs --tail"
   },
   "repository": {
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/kikeverea/full-stack-open-3#readme",
   "dependencies": {
     "express": "^4.18.1",
+    "mongoose": "^6.4.6",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
