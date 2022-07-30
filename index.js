@@ -76,13 +76,29 @@ app.post('/api/persons', (request, response) => {
     else {
       return response
             .status(500)
+            .json(error)
             .end()
     }
   })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter(person => person.id != id)
-  response.status(204, 'Delete success').end()
+  const id = request.params.id
+
+  Person.findByIdAndRemove(id)
+    .then(result => response.status(204).end())
+    .catch(error => {
+      console.log(error)
+      return response.status(500).end() 
+    })
 })
+
+
+
+
+
+
+
+
+
+
