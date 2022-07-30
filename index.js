@@ -75,9 +75,6 @@ app.post('/api/persons', (request, response) => {
   })
 })
 
-// const notUnique = (personName) =>
-//   Person.find({name: personName})
-
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id != id)
