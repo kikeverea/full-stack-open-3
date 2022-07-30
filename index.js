@@ -67,10 +67,16 @@ app.post('/api/persons', (request, response) => {
     response.status(201).json(savedPerson)
   })
   .catch(error => {
-    if (error && error.code === 11000) {
+    console.log(error);
+    if (error.code === 11000) {
       return response
             .status(409)
             .json({error: `Name must be unique. ${person.name} is already in the phonebook`})
+    }
+    else {
+      return response
+            .status(500)
+            .end()
     }
   })
 })
