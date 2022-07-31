@@ -1,0 +1,17 @@
+PUT http://localhost:3001/api/persons/62e6b998ebf0c36d4b6563a9
+Content-Type: application/json
+
+{
+    "name": "Jules Verne 2",
+    "number": "1111111"
+}
+
+### Bad request - malformed id
+
+PUT http://localhost:3001/api/persons/1
+Content-Type: application/json
+
+{
+    "name": "Jules Verne 2",
+    "number": "1111111"
+}
