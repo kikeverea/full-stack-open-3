@@ -37,19 +37,22 @@ app.get('/api/persons', (request, response) => {
   )
 })
 
-app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id);
-  
-  if (person) {
-    response.json(person)
-  }
-  else {
-    response.status(404).end()
-  }
+app.get('/api/persons/:id', (request, response, next) => {  
+  Person.findById(request.params.id)
+    .then(person => {
+      if (person) {
+        response.json(person)
+      }
+      else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => {
+      next(error)
+    })
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const person = request.body
 
   if(!person.name || !person.number) {
@@ -69,31 +72,33 @@ app.post('/api/persons', (request, response) => {
     response.status(201).json(savedPerson)
   })
   .catch(error => {
-    console.log(error);
-    if (error.code === 11000) {
-      return response
-            .status(409)
-            .json({error: `Name must be unique. ${person.name} is already in the phonebook`})
-    }
-    else {
-      return response
-            .status(500)
-            .json(error)
-            .end()
-    }
+    next(error)
   })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-
-  Person.findByIdAndRemove(id)
+  Person.findByIdAndRemove(request.params.id)
     .then(result => response.status(204).end())
-    .catch(error => {
-      console.log(error)
-      return response.status(500).end() 
-    })
 })
+
+const errorHandler = (error, request, response, next) => {
+  console.log(error)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({error: 'Malformed id'})
+  }
+
+  if (error.code === 11000) {
+    return response
+          .status(409)
+          .json({error: `Name must be unique. ${request.body.name} is already in the phonebook`})
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
+
 
 
 
