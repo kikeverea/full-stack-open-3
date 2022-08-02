@@ -57,27 +57,32 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.post('/api/persons', (request, response, next) => {
-  const person = request.body
-
-  if(!person.name || !person.number) {
-    return response
-            .status(400)
-            .json({error: "Both 'name' and 'number' must be provided"})
-  }
-
-  const newPerson = new Person({
-    name: person.name,
-    number: person.number,
-    date: new Date(),
-  })
-
-  newPerson.save()
-  .then(savedPerson => {
-    response.status(201).json(savedPerson)
-  })
-  .catch(error => {
-    next(error)
-  })
+  const body = request.body
+  Person.findOne({name: body.name})
+    .then(person => {
+      console.log("PERSON", person)
+      if (person) {
+        response
+          .status(409)
+          .json({error: `Name must be unique. ${body.name}\ 
+                        is already in the phonebook`})
+      }
+      else {
+        const newPerson = new Person({
+          name: body.name,
+          number: body.number,
+          date: new Date(),
+        })
+      
+        newPerson.save()
+        .then(savedPerson => {
+          response.status(201).json(savedPerson)
+        })
+        .catch(error => {
+          next(error)
+        })
+      }
+    })
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -106,13 +111,15 @@ const errorHandler = (error, request, response, next) => {
   console.log(error)
 
   if (error.name === 'CastError') {
-    return response.status(400).send({error: 'Malformed id'})
+    return response
+          .status(400)
+          .send({error: 'Malformed id'})
   }
 
-  if (error.code === 11000) {
+  if (error.name === 'ValidationError') {
     return response
-          .status(409)
-          .json({error: `Name must be unique. ${request.body.name} is already in the phonebook`})
+          .status(400)
+          .json({error: error.message})
   }
 
   next(error)

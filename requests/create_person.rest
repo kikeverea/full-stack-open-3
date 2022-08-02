@@ -14,12 +14,21 @@ Content-Type: application/json
   "number" : "123 456 789"
 }
 
+### Bad request - name too short
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "ab",
+  "number" : "123 456 789"
+}
+
 ### Bad request - no number
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Jules Verne"
+  "name": "asd"
 }
 
 ### get all
