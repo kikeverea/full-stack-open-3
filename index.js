@@ -57,15 +57,17 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.post('/api/persons', (request, response, next) => {
-  const body = request.body
+  const body = prepareForSave(request.body)
+
   Person.findOne({name: body.name})
     .then(person => {
-      console.log("PERSON", person)
       if (person) {
         response
           .status(409)
-          .json({error: `Name must be unique. ${body.name}\ 
-                        is already in the phonebook`})
+          .json({
+            error: 
+              `Name must be unique. '${body.name}' is already in the phonebook`
+            })
       }
       else {
         const newPerson = new Person({
@@ -86,24 +88,29 @@ app.post('/api/persons', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  const { name, number } = request.body
+ 
+  const { name, number } = prepareForSave(request.body)
 
-  const person = {
-    name: name,
-    number: number
-  }
+  // mongoose model validation skips 'required' constraints in updates 
+  if (!name) 
+    return response.status(400).json({
+      error: 'Person validation failed: name: Name is required'})
+
+  if (!number) 
+    return response.status(400).json({
+      error: 'Person validation failed: number: Number is required'})
 
   Person.findByIdAndUpdate(
     request.params.id,
     { name, number },
     { new: true, runValidators: true, context: 'query' }
   )
-    .then(updatedPerson => {
-      response.status(200).json(updatedPerson)
-    })
-    .catch(error => {
-      next(error)
-    })
+  .then(updatedPerson => {
+    response.status(200).json(updatedPerson)
+  })
+  .catch(error => {
+    next(error)
+  })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -111,8 +118,16 @@ app.delete('/api/persons/:id', (request, response) => {
     .then(result => response.status(204).end())
 })
 
+const prepareForSave = (body) => {
+  body.number = body.number
+    ? body.number.replace(/\s/g, "")
+    : null
+
+  return body
+}
+
 const errorHandler = (error, request, response, next) => {
-  console.log(error)
+  console.log("ERROR", error)
 
   if (error.name === 'CastError') {
     return response

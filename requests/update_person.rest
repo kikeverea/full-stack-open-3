@@ -1,25 +1,68 @@
+PUT http://localhost:3001/api/persons/62e543989f00161686102393
+Content-Type: application/json
+
+{
+    "name": "Jules Verne 2",
+    "number": "12345678"
+}
+
+### Bad request - no name
 PUT http://localhost:3001/api/persons/62e6b998ebf0c36d4b6563a9
 Content-Type: application/json
 
 {
-    "name": "Jules Verne 2",
-    "number": "1111111"
-}
-
-### Bad request - malformed id
-PUT http://localhost:3001/api/persons/62dd5cab31bceb91f5440d49
-Content-Type: application/json
-
-{
-    "name": "Jules Verne 2",
-    "number": "1111111"
+  "number" : "123 456 789"
 }
 
 ### Bad request - name too short
-PUT http://localhost:3001/api/persons/62dd5cab31bceb91f5440d49
+PUT http://localhost:3001/api/persons/62e6b998ebf0c36d4b6563a9
 Content-Type: application/json
 
 {
-    "name": "aa",
-    "number": "1111111"
+  "name": "ab",
+  "number" : "123 456 789"
+}
+
+### Bad request - no number
+PUT http://localhost:3001/api/persons/62e6b998ebf0c36d4b6563a9
+Content-Type: application/json
+
+{
+  "name": "asd"
+}
+
+### Bad request - number too short
+PUT http://localhost:3001/api/persons/62e6b998ebf0c36d4b6563a9
+Content-Type: application/json
+
+{
+  "name": "abcd",
+  "number" : "1234567"
+}
+
+### Bad request - invalid number format: part before hyphen too short
+PUT http://localhost:3001/api/persons/62e6b998ebf0c36d4b6563a9
+Content-Type: application/json
+
+{
+  "name": "unique",
+  "number" : "1-345678"
+}
+
+### Bad request - invalid number format: part before hyphen too long
+PUT http://localhost:3001/api/persons/62e6b998ebf0c36d4b6563a9
+Content-Type: application/json
+
+{
+  "name": "another name",
+  "number" : "1234-345678"
+}
+
+### Bad request - invalid number format: too many hyphens
+PUT http://localhost:3001/api/persons/62e6b998ebf0c36d4b6563a9
+Content-Type: application/json
+
+{
+  "name": "abcdefgt",
+  "number" : "1-345-678"
 }

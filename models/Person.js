@@ -15,12 +15,21 @@ const personSchema = new mongoose.Schema({
   "id": String,
   "name": {
     type: String, 
-    required: true,
-    minLength: 3
+    required: [true, 'Name is required'],
+    minLength: [3, 'Name must be at least 3 characters long']
   }, 
   "number": {
-    type: String,
-    required: true    
+    type: String, 
+    required: [true, 'Number is required'],
+    minLength: [8, 'Number must be at least 8 characters long'],
+    validate: {
+      validator: value => {
+        console.log("VALIDATING...")
+        return value.match('^[0-9]{2,3}[-]?[0-9]+(?<=.{8,})$')
+      },
+      message: "Phone number characters can only be separated by a single " + 
+                "hyphen (-), after the 2nd or 3rd character"
+    }
   }
 })
 

@@ -31,5 +31,41 @@ Content-Type: application/json
   "name": "asd"
 }
 
+### Bad request - number too short
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "abcd",
+  "number" : "1234567"
+}
+
+### Bad request - invalid number format: part before hyphen too short
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "unique",
+  "number" : "1-345678"
+}
+
+### Bad request - invalid number format: part before hyphen too long
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "another name",
+  "number" : "1234-345678"
+}
+
+### Bad request - invalid number format: too many hyphens
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "abcdefgt",
+  "number" : "1-345-678"
+}
+
 ### get all
 GET http://localhost:3001/api/persons
