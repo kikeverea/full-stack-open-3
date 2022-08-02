@@ -7,11 +7,19 @@ Content-Type: application/json
 }
 
 ### Bad request - malformed id
-
-PUT http://localhost:3001/api/persons/1
+PUT http://localhost:3001/api/persons/62dd5cab31bceb91f5440d49
 Content-Type: application/json
 
 {
     "name": "Jules Verne 2",
+    "number": "1111111"
+}
+
+### Bad request - name too short
+PUT http://localhost:3001/api/persons/62dd5cab31bceb91f5440d49
+Content-Type: application/json
+
+{
+    "name": "aa",
     "number": "1111111"
 }
