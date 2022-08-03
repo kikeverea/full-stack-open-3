@@ -27,8 +27,8 @@ const personSchema = new mongoose.Schema({
       validator: value => {
         return value.match('^[0-9]{2,3}[-]?[0-9]+(?<=.{8,})$')
       },
-      message: 'Phone number characters can only be separated by a single \
-                hyphen (-), after the second or third character'
+      message: 'Phone number may only contain numbers, and an optional \
+      hyphen (-) after the second or third number'
     }
   }
 })
